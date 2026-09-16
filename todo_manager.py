@@ -1,14 +1,11 @@
-import json
+from libs.console_menu.menu import ConsoleMenu
+from libs.json_storage.storage import JSONStorage
 
 class Task:
     def __init__(self, task_id, title, done=False):
         self.id = task_id
         self.title = title
         self.done = done
-
-    def mark_done(self):
-        # Меняет статус задачи
-        self.done = True
 
     def to_dict(self):
         # Превращает в словарь для JSON
@@ -20,39 +17,67 @@ class Task:
 
 class TaskManager:
     def __init__(self):
-        self.tasks = []
-        self.next_id = 1
-        self.load()
+        self.next_id = 0
+        self.menu_name = "menu.json"
+        self.password = "1"
+        self.menu = ConsoleMenu(self.menu_name, self, self.password)
+        self.storage_name = "tasks.json"
+        self.storage = JSONStorage(self.storage_name, Task)
 
-    def find_task(self, task_id):
-        for task in self.tasks:
-            if task.id == task_id:
-                return task
-        return None
+    def main(self):
+        self.menu.play()
 
-    def save(self):
-        with open('tasks.json', 'w', encoding='utf-8') as f:
-            json.dump([task.to_dict() for task in self.tasks], f, indent=2, ensure_ascii=False)
-
-    def load(self):
-        try:
-            with open('tasks.json', 'r', encoding='utf-8') as f:
-                data = json.load(f)
-            self.tasks = [Task.from_dict(item) for item in data]
-            if self.tasks:
-                self.next_id = max(task.id for task in self.tasks) + 1
+    def see_task(self):
+        self.storage.load()
+        for item in self.storage.items:
+            if item.id == 0:
+                print(item.title)
+            elif not item.done:
+                print(f"[ ] Задача №{item.id}: {item.title}")
             else:
-                self.next_id = 1
-        except FileNotFoundError:
-            self.tasks = []
-            self.next_id = 1
-        except json.JSONDecodeError:
-            print("Файл tasks.json повреждён. Будет создан новый список задач.")
-            self.tasks = []
-            self.next_id = 1
-    def add(self, title):
-        # TODO: создать задачу, добавить, сохранить
+                print(f"[X] Задача №{item.id}: {item.title}")
+        input("\nНажмите Enter для того, чтобы продолжить")
 
-        pass
+    def add_task(self):
+        self.storage.load()
+        title = (input("Введите новую задачу: "))
+        items = self.storage.items
+        self.next_id = len(items) + 1
+        self.storage.add_item(Task(self.next_id, title))
 
-    # TODO: методы delete, mark_done, load, save, get_all
+    def check_task(self):
+        while True:
+            try:
+                self.next_id = int(input("Введите номер выполненной задачи: "))
+            except ValueError:
+                print("\nОшибка: введите число.")
+                continue
+            self.storage.load()
+            for item in self.storage.items:
+                if item.id == self.next_id:
+                    item.done = True
+                    self.storage.save()
+                    return
+
+    def del_task(self):
+        while True:
+            try:
+                self.next_id = int(input("Введите номер задачи, которую хотите удалить: "))
+            except ValueError:
+                print("Ошибка: введите число.")
+                continue
+            self.storage.load()
+            if self.next_id < 1 or self.next_id > len(self.storage.items):
+                print("Задача с таким номером не найдена")
+                continue
+            for item in self.storage.items:
+                if item.id == self.next_id:
+                    self.storage.remove_item(item)
+                    break
+            for item in self.storage.items:
+                if item.id > self.next_id:
+                    item.id -= 1
+            self.storage.save()
+            return
+
+    # TODO: доделать del_task
