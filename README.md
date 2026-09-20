@@ -164,4 +164,4 @@ python -m unittest tests.test_todo_manager -v
 
 ## Лицензия
 
-MIT © 2026 i1SLOWFire — см. файл [[LICENSE]].
+MIT © 2026 Ivan Vorobyov — см. файл [LICENSE](LICENSE).
