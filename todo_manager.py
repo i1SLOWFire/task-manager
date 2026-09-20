@@ -56,16 +56,16 @@ class TaskManager:
 
     def check_task(self):
         while True:
+            self.storage.load()
+            if not self.storage.items:
+                print("Список задач пуст.")
+                return
             try:
                 self.next_id = int(input("Введите номер выполненной задачи: "))
             except ValueError:
                 print("Ошибка: введите число.")
                 continue
-            self.storage.load()
-            if not self.storage.items:
-                print("Список задач пуст.")
-                return
-            elif self.next_id < self.storage.items[0].id or self.next_id > len(self.storage.items):
+            if self.next_id < self.storage.items[0].id or self.next_id > len(self.storage.items):
                 print("Задача с таким номером не найдена.")
                 continue
             for item in self.storage.items:
@@ -80,15 +80,15 @@ class TaskManager:
 
     def del_task(self):
         while True:
+            self.storage.load()
+            if not self.storage.items:
+                print("Список задач пуст.")
+                return
             try:
                 self.next_id = int(input("Введите номер задачи, которую хотите удалить: "))
             except ValueError:
                 print("Ошибка: введите число.")
                 continue
-            self.storage.load()
-            if not self.storage.items:
-                print("Список задач пуст.")
-                return
             if self.next_id < self.storage.items[0].id or self.next_id > len(self.storage.items):
                 print("Задача с таким номером не найдена.")
                 continue

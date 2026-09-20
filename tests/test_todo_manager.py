@@ -83,6 +83,7 @@ class TestTaskManager(unittest.TestCase):
         with patch('builtins.input', return_value="1"):
             self.test_task.check_task()
         self.assertEqual(len(self.test_task.storage.items), 0)
+        self.assertEqual(self.test_task.next_id, 0)
 
     def test_del_task(self):
         with patch('builtins.input', side_effect=["Купить хлеб", "Вынести мусор", "Выключить утюг"]):
@@ -120,6 +121,7 @@ class TestTaskManager(unittest.TestCase):
         with patch('builtins.input', return_value="1"):
             self.test_task.del_task()
         self.assertEqual(len(self.test_task.storage.items), 0)
+        self.assertEqual(self.test_task.next_id, 0)
 
     def test_add_multiple_tasks_id_increments(self):
         with patch('builtins.input', side_effect=["Первая", "Вторая", "Третья"]):
