@@ -51,6 +51,7 @@ class TaskManager:
             items = self.storage.items
             self.next_id = len(items) + 1
             self.storage.add_item(Task(self.next_id, title))
+            print("Задача добавлена.")
             return
 
     def check_task(self):
@@ -94,6 +95,7 @@ class TaskManager:
             for item in self.storage.items:
                 if item.id == self.next_id:
                     self.storage.remove_item(item)
+                    print("Задача удалена.")
                     break
             for item in self.storage.items:
                 if item.id > self.next_id:
