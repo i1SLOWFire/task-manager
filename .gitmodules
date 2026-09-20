@@ -1,0 +1,6 @@
+[submodule "libs/console_menu"]
+	path = libs/console_menu
+	url = https://github.com/i1SLOWFire/console-menu.git
+[submodule "libs/json_storage"]
+	path = libs/json_storage
+	url = https://github.com/i1slowfire/json-storage.git

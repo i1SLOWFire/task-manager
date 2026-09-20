@@ -1,0 +1,32 @@
+[
+  {
+    "id": 0,
+    "title": "МЕНЮ",
+    "method": "from_user_to_dev"
+  },
+  {
+    "id": 1,
+    "title": "Посмотреть список задач",
+    "method": "see_task"
+  },
+  {
+    "id": 2,
+    "title": "Добавить задачу",
+    "method": "add_task"
+  },
+  {
+    "id": 3,
+    "title": "Отметить задачу выполненной",
+    "method": "check_task"
+  },
+  {
+    "id": 4,
+    "title": "Удалить задачу",
+    "method": "del_task"
+  },
+  {
+    "id": 5,
+    "title": "Выйти",
+    "method": "menu_exit"
+  }
+]
